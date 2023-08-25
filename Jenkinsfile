@@ -2,41 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage ('Compile Stage') {
-
+        stage('Build') {
             steps {
-                withMaven(maven : 'maven_3_5_0') {
-                    sh 'mvn clean compile'
-                }
+                echo 'Building..'
             }
         }
-
-        stage ('Testing Stage') {
-
+        stage('Test') {
             steps {
-                withMaven(maven : 'maven_3_5_0') {
-                    sh 'mvn test'
-                }
+                echo 'Testing..'
             }
         }
-
-        stage ('Deploy?') {
+        stage('Deploy') {
             steps {
-                input('Do you want to deploy?')
-            }
-        }
-
-        stage ('Deployment Stage') {
-            steps {
-
-		            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'PCF_LOGIN',
-                            usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-
-                    sh '/usr/local/bin/cf login -a http://api.run.pivotal.io -u $USERNAME -p $PASSWORD'
-			        sh '/usr/local/bin/cf push'
-
-			
-                }
+                echo 'Deploying....'
             }
         }
     }
